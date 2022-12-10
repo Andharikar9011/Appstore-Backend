@@ -1,2 +1,20 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+{{#if message}}
+  <h3>{{message}} </h3>
+{{/if}}
+<div class="login">
+  <div class="login-header">
+    <h1>Login</h1>
+  </div>
+  <div class="login-form">
+    <form action="/login" method="post">
+      <h3>Username:</h3>
+      <input type="text" name="username" placeholder="Email" /><br />
+      <h3>Password:</h3>
+      <input type="password" name="password" placeholder="Password" />
+      <br />
+      <button type="submit">Submit</button>
+      <br />
+    </form>
+    <div><a href="/signup">Signup</a></div>
+  </div>
+</div>
