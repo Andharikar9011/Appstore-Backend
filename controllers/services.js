@@ -1,5 +1,6 @@
 const Services = require("../models/services");
 const formidable = require("formidable");
+var multer = require("multer");
 
 exports.addservice = (req, res) => {
   let form = new formidable.IncomingForm();
@@ -47,7 +48,9 @@ exports.updateservice = (req, res) => {
     service.size = req.body.size;
   }
 };
-exports.deleteservice = (req, res) => {};
+exports.deleteservice = (req, res) => {
+  Services.deleteOne({ _id: req.body.id });
+};
 exports.getallservice = (req, res) => {};
 exports.getcategorywiseservice = (req, res) => {};
 exports.getreadmoreservice = (req, res) => {};

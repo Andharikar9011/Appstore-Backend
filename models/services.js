@@ -20,12 +20,6 @@ const afaservicesSchema = mongoose.Schema(
       minlength: 2,
       maxlength: 5000,
     },
-    price: {
-      type: Number,
-      trim: true,
-      required: true,
-      maxlength: 10,
-    },
     tags: {
       type: Array,
       default: [],
@@ -59,10 +53,6 @@ const afaservicesSchema = mongoose.Schema(
       url: String,
       data: Buffer,
       contentType: String,
-    },
-    shipping: {
-      type: Boolean,
-      required: false,
     },
     reviews: {
       type: Array,

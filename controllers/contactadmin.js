@@ -2,7 +2,9 @@ const Services = require("../models/services");
 const Contact = require("../models/userdetails");
 const uuid = require("uuid");
 const crypto = require("crypto");
+const Doubts = require("../models/userdoubts");
 
+// tested
 exports.getallcontacts = (req, res) => {
   Contact.find({ acctype: 0 }, (err, result) => {
     if (err | !result) {
@@ -95,6 +97,7 @@ exports.getalladmins = (req, res) => {
   });
 };
 
+// tested
 exports.geteveryone = (req, res) => {
   Contact.find((err, result) => {
     if (err | !result) {
@@ -205,7 +208,34 @@ exports.viewallservicesusedbycontact = (req, res) => {
   );
 };
 
-exports.stopaserviceforcontact = (req, res) => {};
-exports.startaserviceforcontact = (req, res) => {};
-exports.viewcontactdoubts = (req, res) => {};
-exports.answercontactdoubt = (req, res) => {};
+// tested
+exports.viewalldoubts = (req, res) => {
+  Doubts.find((err, result) => {
+    if (err | !result) {
+      console.log(err);
+      res.status(400).json({ msg: "Cannot Find Doubt." });
+    } else {
+      res.status(200).json({ result: result });
+    }
+  });
+};
+
+// tested
+exports.answercontactdoubt = (req, res) => {
+  Doubts.findOne({ _id: req.body.id }, (err, result) => {
+    if (err | !result) {
+      console.log(err);
+      res.status(400).json({ msg: "Cannot Find Doubt." });
+    }
+    result.adminid = req.body.adminid;
+    result.answer = req.body.answer;
+    result.save((err, result) => {
+      if (err | !result) {
+        console.log(err);
+        res.status(400).json({ msg: "Cannot save Doubt." });
+      } else {
+        res.status(200).json({ msg: "Answer recorded." });
+      }
+    });
+  });
+};

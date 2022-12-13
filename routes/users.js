@@ -1,61 +1,42 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createcategories,
-  getcategories,
-} = require("../controllers/categories");
 
 const {
-  getallcontacts,
-  createadmin,
-  updateadmin,
-  deleteadmin,
-  getalladmins,
-  geteveryone,
-  updatecontact,
-  disableservicesforcontact,
-  enableservicesforcontact,
-  verifycontactemail,
-  verifycontactmobile,
-  viewallservicesusedbycontact,
-} = require("../controllers/contactadmin");
+  getmyprofile,
+  createcontact,
+  editmydetails,
+  verifymyemail,
+  verifymymobilenumber,
+  viewdoubts,
+  viewmyservices,
+  buyservicerequest,
+  stopservicerequest,
+  registermydoubt,
+} = require("../controllers/contactprofile");
 
-const {
-  addservice,
-  updateservice,
-  deleteservice,
-  getallservice,
-  getcategorywiseservice,
-  getreadmoreservice,
-  buyingdetailsservice,
-} = require("../controllers/services");
+var fs = require("fs");
+var path = require("path");
 
-router.post("/createcategories", createcategories);
-router.get("/allcategories", getcategories, (req, res) => {
-  console.log(req.categories);
-  res.json({ categories: req.categories });
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "-" + Date.now());
+  },
 });
+var upload = multer({ storage: storage });
 
-// router.post("/createadmin", createadmin);
-
-router.get("/getalladmins", getalladmins);
-
-// router.post("/updateadmin", updateadmin);
-
-// router.post("/deleteadmin", deleteadmin);
-
-router.post("/addservice", addservice);
-
-router.post("/updateservice", updateservice);
-
-router.post("/deleteservice", deleteservice);
-
-router.post("/getallservice", getallservice);
-
-router.post("/getcategorywiseservice", getcategorywiseservice);
-
-router.post("/getreadmoreservice", getreadmoreservice);
-
-router.post("/buyingdetailsservice", buyingdetailsservice);
+router.post("/createcontact", createcontact);
+router.post("/editmydetails", editmydetails);
+router.get("/getmyprofile/:id", getmyprofile);
+router.post("/registermydoubt", registermydoubt);
+router.get("/viewdoubts/:id", viewdoubts);
+// router.post("/upload", upload, (req, res) => {
+//   console.log("hio");
+//   res.send("img uploaded");
+// });
 
 module.exports = router;

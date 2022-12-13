@@ -25,6 +25,10 @@ const afaSchema = new Schema(
       required: true,
       unique: true,
     },
+    profilephoto: {
+      type: Buffer,
+      contentType: String,
+    },
     company: String,
     jobtitle: String,
     pincode: Number,

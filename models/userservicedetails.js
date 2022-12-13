@@ -18,10 +18,6 @@ const afauserservicedetailsschema = mongoose.Schema(
     },
     isactive: {
       type: Boolean,
-      required: true,
-    },
-    usage: {
-      type: Array,
     },
     paymentdetails: {
       type: Array,
