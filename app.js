@@ -15,6 +15,7 @@ var app = express();
 const uri =
   "mongodb+srv://dummy:dummy%40123@cluster0.2unng.mongodb.net/afadbdb?retryWrites=true&w=majority";
 // Prints "MongoServerError: bad auth Authentication failed."
+mongoose.set("strictQuery", true);
 mongoose
   .connect(uri, {
     useNewUrlParser: true,

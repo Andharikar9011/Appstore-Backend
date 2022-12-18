@@ -12,6 +12,7 @@ exports.signup = (req, res) => {
   const user = new Contact();
   user.name = req.body.name;
   user.username = req.body.username;
+  user.phoneno = req.body.phoneno;
   user.hashed = crypto
     .pbkdf2Sync(req.body.password, salt, 100, 32, "sha256")
     .toString("hex");
@@ -19,16 +20,18 @@ exports.signup = (req, res) => {
   user
     .save()
     .then((data) => {
-      res.render("index", { message: "Signup Successful" });
+      res.status(200).json({ message: "Signup Successful" });
     })
     .catch((error) => {
       console.log(error);
       console.log(error.message);
       console.log(error.code);
       if (error.code == 11000) {
-        res.render("signup", { message: "User already Present" });
+        // res.render("signup", { message: "User already Present" });
+        res.json({ message: "User already Present" });
       } else {
-        res.render("signup", { message: error.message });
+        // res.render("signup", { message: error.message });
+        res.json({ message: error.message });
       }
     });
 };
@@ -43,11 +46,13 @@ exports.signin = (req, res) => {
           expiresIn: "1h",
         });
         res.cookie("token", token);
-        res.redirect("/dashboard");
+        res.status(200).json({ message: "Sign in sucessful " });
+        // res.redirect("/dashboard");
       }
     })
     .catch((error) => {
-      res.render("index", { message: error });
+      // res.render("index", { message: error });
+      res.status(400).json({ error });
     });
 };
 
@@ -70,11 +75,11 @@ exports.isAdmin = (req, res, next) => {
       if (user.acctype == 1) {
         next();
       } else {
-        res.redirect("/dashboard");
+        res.status(403).json({ messages: "Admin resource." });
       }
     })
     .catch((error) => {
-      res.render("index", { message: "Cannot Access Admin resource." });
+      res.status(400).json({ message: "Cannot Access Admin resource." });
     });
 };
 
@@ -84,11 +89,11 @@ exports.isSuperAdmin = (req, res) => {
       if (user.acctype == 2) {
         next();
       } else {
-        res.redirect("/dashboard");
+        res.status(403).json({ messages: "Admin resource." });
       }
     })
     .catch((error) => {
-      res.render("index", { message: "Cannot Access Admin resource." });
+      res.json({ message: "Cannot Access Admin resource." });
     });
 };
 
@@ -96,11 +101,12 @@ exports.isAuthorized = (req, res, next) => {
   if (req.profile.id == req.auth.id) {
     next();
   } else {
-    req.render("index", { messsage: "Profile error Sign In again Please." });
+    req.status(400).json({ messsage: "Profile error Sign In again Please." });
   }
 };
 
 exports.logout = (req, res, next) => {
   res.clearCookie("token");
-  res.render("index");
+  res.status(200).json({ message: "Logout Sucessful" });
+  // res.render("index");
 };
